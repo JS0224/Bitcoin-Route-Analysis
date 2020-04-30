@@ -3,9 +3,15 @@
   <head>
     <meta charset="utf-8">
     <title>blockchain visualization</title>
+    <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
       window.onload = function(){
-        var socket = io.connection();
+        var socket = io.connect();
+        socket.on('found wallet', function(data){
+          console.log(data);
+        });
+        var wallet = "0xabcdefgh";
+        socket.emit('wallet', wallet);
       }
     </script>
   </head>
