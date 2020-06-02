@@ -1,8 +1,107 @@
-body {
-  padding: 50px;
+html {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  height : 100%
+}
+body {
+  height : 96%
 }
 
 a {
   color: #00B7FF;
+}
+
+.container-tab{
+  float: right;
+  width: 28%;
+  height : 95%;
+	margin: 0 auto;
+  margin-right : 10px;
+}
+.container-image{
+  float: left;
+	width: 68%;
+  height : 95%;
+	margin: 0 auto;
+}
+
+ul.tabs{
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+ul.tabs li{
+	background: none;
+	color: #222;
+	display: inline-block;
+	padding-top: 15px;
+  padding-bottom : 15px;
+  padding-left : 13.4%;
+  padding-right : 13.4%;
+	cursor: pointer;
+}
+
+ul.tabs li.current{
+	background: #ededed;
+	color: #222;
+}
+
+.tab-content{
+	display: none;
+	background: #ededed;
+  height : 93%;
+  padding : 15px;
+}
+
+.tab-content.current{
+	display: inherit;
+}
+
+.data-div{
+  height : 60%;
+  background : red;
+  padding : 5px;
+  margin-bottom : 10px;
+}
+
+.button-div{
+  height : 35%;
+  background : yellow;
+}
+
+
+.form-div{
+  height : 60%;
+  margin : 5px;
+  background : white;
+}
+
+.form-content{
+  height : 28%;
+  margin-top :10px;
+  margin-bottom : 10px;
+  margin-left : 5px;
+  margin-right : 5px;
+  display:none;
+}
+
+.form-current{
+  display:block;
+}
+
+.selection-div{
+  height : 30%;
+  margin : 5px;
+  background : #01DFD7;
+}
+
+.selection-content{
+  float : left;
+  width : 33.33%;
+  height : 100%;
+  border: = solid 1px black;
+  background : #01DFD7;
+}
+
+.selection-current{
+  background : #08088A;
 }

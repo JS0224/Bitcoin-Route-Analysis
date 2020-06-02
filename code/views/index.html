@@ -4,31 +4,137 @@
     <meta charset="utf-8">
     <title>blockchain visualization</title>
     <script src="/socket.io/socket.io.js"></script>
-    <script type="text/javascript">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <link rel="stylesheet" href="stylesheets/style.css" type="text/css">
+    <script>
+    /*
       window.onload = function(){
-        var socket = io.connect();
-        socket.on('found wallet', function(data){
-          console.log(data);
+        /*var socket = io.connect();
+        socket.on('found block', function(data){
+            console.log("block data", data);
         });
-        var wallet = "0xabcdefgh";
-        socket.emit('wallet', wallet);
-      }
+
+        socket.on('found addr', function(addr){
+            if(addr!=null){
+              console.log("addr data : ", addr)
+            }
+        });
+
+        socket.on('found transaction', function(tx_hash){
+            if(tx_hash!=null){
+              console.log("transaction data: ", tx_hash)
+            }
+        });
+        //document.getElementById("button")
+
+      var block = 13000;
+      var tx = "5b529f0f8d310cb23eeee10ed0c5bf999e975022286936fa173e5543a7081bec";
+      var addr = "1JrEWRAPFcZwxY1vi4zstRUknurD4NEpn3";
+      socket.emit("address", addr);
+      socket.emit("transaction", tx);
+      socket.emit('block', block);
+    }*/
+
+    $(document).ready(function(){
+      //tab
+      $('ul.tabs li').click(function(){
+        var tab_id = $(this).attr('data-tab');
+        $('ul.tabs li').removeClass('current');
+        $('.tab-content').removeClass('current');
+        $(this).addClass('current');
+        $("#"+tab_id).addClass('current');
+      })
+
+      //data selection
+      $('div.selection-div div').click(function(){
+        //console.log("click");
+        var div_id = $(this).attr('select-div');
+        $('div.selection-div div').removeClass('selection-current');
+        $('.form-content').removeClass('form-current');
+        $(this).addClass('selection-current');
+        $("#"+div_id + "_form").addClass('form-current');
+      })
+    })
+    function searchData(type){
+        console.log("in search data");
+        var input = document.getElementById(type+"_input").value;
+        temp = input;
+        alert(temp);
+    }
+
+    function displayHotOnly(){
+      alert("hot only");
+    }
     </script>
   </head>
   <body>
-    Search Wallet
-    <form class= action="index.html" method="post">
-      <input type="text" name="addr">
-      <input type="submit" name="btn">
-    </form>
-    Information of Wallet<br><br>
+    <div class="container-image">
+      Search Wallet
+      <button type="button" name="button">HIIII</button>
+      <form class= action="index.html" method="post">
+        <input type="text" name="addr">
+        <input type="submit" name="btn">
+      </form>
+      Information of Wallet<br><br>
 
-    Search block
-    <form class= action="index.html"  method="post">
-      <input type="text" name="addr">
-      <input type="submit" name="btn">
-    </form>
-    Information of Block<br><br>
+      Search block
+      <form class= action="index.html"  method="post">
+        <input type="text" name="addr">
+        <input type="submit" name="btn">
+      </form>
+      Information of Block<br><br>
+    </div>
 
+    <div class="container-tab">
+      <ul class="tabs">
+        <li class="tab-link current" data-tab="tab-1">SEARCH</li>
+        <li class="tab-link" data-tab="tab-2">OPTION</li>
+      </ul>
+
+      <!--TAB 1-->
+      <div id="tab-1" class="tab-content current">
+        <!--1-1 : data_div-->
+        <div id = "data_div" class = "data-div">
+          data_div
+          <!--- 1-1-1 : Selection div-->
+          <div id = "selection_div" class = "selection-div">
+            <div id = "block_select" class = "selection-content selection-current" select-div = "block">BLOCK</div>
+            <div id = "tx_select" class = "selection-content" select-div = "tx">TX</div>
+            <div id = "addr_select" class = "selection-content" select-div = "addr">ADDR</div>
+          </div>
+          <!--- 1-1-2 : Form Div-->
+          <div id = "form_div" class = "form-div">
+            <!-- Block Form -->
+            <div id = "block_form" class = "form-content form-current" data-div="block">
+              block
+              <input text="text" id ="block_input">
+              <button id = "block_submit" onclick = "searchData('block')">search</button>
+            </div>
+            <!-- Tx Form -->
+            <div id = "tx_form" class = "form-content" data-div="tx">
+              transactions
+              <input type="text" id = "tx_input">
+              <button id = "tx_submit" onclick = "searchData('tx')">search</button>
+            </div>
+            <!-- Addr Form -->
+            <div id = "addr_form" class = "form-content" data-div="addr">
+              address
+              <input type="text" id = "addr_input" name="addr">
+              <button id = "addr_submit" onclick = "searchData('addr')">search</button>
+            </div>
+          </div>
+        </div>
+        <!---1-2 : button_div -->
+        <div id = "button_div" class = "button-div">
+          button_div
+          <button id="hot_only" onclick = "displayHotOnly()">HOT ONLY </button>
+        </div>
+      </div>
+
+      <!--TAB 2-->
+      <div id="tab-2" class="tab-content">
+        ---- ---- ★------ ---- ---- ---- ---- ---- ---- -------- ---- ---- ---- ---- ---- ---- -------- ---- ---- ---- ★-- ---- ---- ------★ ---- ---- ---- ---- ---- ---- -------- ---- ---- ---- ---- ---- ---- ★------ ---- ---- ---- ----
+      </div>
+    </div>
   </body>
 </html>
