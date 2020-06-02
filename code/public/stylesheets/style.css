@@ -45,6 +45,7 @@ ul.tabs li.current{
 	color: #222;
 }
 
+/*Tab*/
 .tab-content{
 	display: none;
 	background: #ededed;
@@ -56,6 +57,7 @@ ul.tabs li.current{
 	display: inherit;
 }
 
+/*Tab1 data_div*/
 .data-div{
   height : 60%;
   background : red;
@@ -63,11 +65,30 @@ ul.tabs li.current{
   margin-bottom : 10px;
 }
 
+
+.selection-div{
+  height : 30%;
+  margin : 5px;
+  background : #01DFD7;
+}
+
+.selection-content{
+  float : left;
+  width : 33.33%;
+  height : 100%;
+  border: = solid 1px black;
+  background : #01DFD7;
+}
+
+.selection-current{
+  background : #08088A;
+}
+
+/*Tab1 button_div*/
 .button-div{
   height : 35%;
   background : yellow;
 }
-
 
 .form-div{
   height : 60%;
@@ -88,20 +109,40 @@ ul.tabs li.current{
   display:block;
 }
 
-.selection-div{
-  height : 30%;
+/*Tab2 color_div*/
+.color-div{
+  height : 45%;
+  background : red;
+  padding : 5px;
+  margin-bottom : 10px;
+}
+
+.addr-color-div{
+  height : 35%;
   margin : 5px;
+  margin-top : 20px;
   background : #01DFD7;
 }
 
-.selection-content{
+.tx-color-div{
+  height : 35%;
+  margin : 5px;
+  margin-top : 20px;
+  background : #0101D7;
+}
+
+.color-circle-div{
   float : left;
-  width : 33.33%;
-  height : 100%;
-  border: = solid 1px black;
-  background : #01DFD7;
+  height : 60%;
+  width : 40%;
+  margin: 10px;
+  background : white;
 }
 
-.selection-current{
-  background : #08088A;
+//*Tab2 condition_div*/
+.condition-div{
+  height : 45%;
+  background : red;
+  padding : 5px;
+  margin-bottom : 10px;
 }
