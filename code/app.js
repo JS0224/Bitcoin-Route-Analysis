@@ -59,18 +59,18 @@ app.io.sockets.on('connection', function (socket){
   });
 
   //Transactions
-  socket.on('transaction', function(tx_hash){
+  socket.on('tx', function(tx_hash){
     sql = mariaDB.getSql('Transactions') + "\"" + String(tx_hash)+ "\"" ;
     console.log("tr sql:", sql);
     rows = mariaDB.getDataFromDB(sql);
     rows.then(function(data){
       console.log("trans: ",data);
-      socket.emit('found transaction',data[0]);
+      socket.emit('found tx',data[0]);
     });
   });
 
   //Address
-  socket.on('address', function(addr){
+  socket.on('addr', function(addr){
     sql = mariaDB.getSql('Addresses') + "\"" + String(addr) + "\"";
     console.log("addr sql", sql);
     rows = mariaDB.getDataFromDB(sql);
