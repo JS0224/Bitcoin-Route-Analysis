@@ -5,6 +5,9 @@
     <title>blockchain visualization</title>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <!--script src ="javascripts/jquery-ui.js"></script-->
+    <script src="javascripts/colorPicDialog.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="stylesheets/style.css" type="text/css">
     <script>
     /*
@@ -54,7 +57,14 @@
         $(this).addClass('selection-current');
         $("#"+div_id + "_form").addClass('form-current');
       })
+
+
+      //$('#dialog').dialog();
+      //createNewDialog('dialog', 'hot_addr_color_div');
     })
+
+    //get data from _input
+    //clicked search btn
     function searchData(type){
         console.log("in search data");
         var input = document.getElementById(type+"_input").value;
@@ -62,9 +72,23 @@
         alert(temp);
     }
 
+    //clicked hot_btn only
     function displayHotOnly(){
       alert("hot only");
     }
+
+    //clicked color circle
+    function colorChoose(id){
+      createNewDialog('dialog', id);
+    }
+
+    //clicked setting_complete_btn
+    function setCondition(){
+      let time_val = document.getElementById('time_condition_input').value;
+      let number_val = document.getElementById('used_number_input').value;
+      alert("time_val: " + time_val + "number_val" + number_val);
+    }
+
     </script>
   </head>
   <body>
@@ -83,6 +107,12 @@
         <input type="submit" name="btn">
       </form>
       Information of Block<br><br>
+
+      <div id="dialog" class="modal" display = "none">
+        <canvas id="picker"></canvas>
+        <input id="color" value="#54aedb" hidden ="true">
+        <!--input id="color" value="#54aedb"-->
+      </div>
     </div>
 
     <div class="container-tab">
@@ -92,7 +122,7 @@
       </ul>
 
       <!--TAB 1-->
-      <div id="tab-1" class="tab-content current">
+      <div id="tab-1" class="tab-content">
         <!--1-1 : data_div-->
         <div id = "data_div" class = "data-div">
           data_div
@@ -132,8 +162,49 @@
       </div>
 
       <!--TAB 2-->
-      <div id="tab-2" class="tab-content">
-        ---- ---- ★------ ---- ---- ---- ---- ---- ---- -------- ---- ---- ---- ---- ---- ---- -------- ---- ---- ---- ★-- ---- ---- ------★ ---- ---- ---- ---- ---- ---- -------- ---- ---- ---- ---- ---- ---- ★------ ---- ---- ---- ----
+      <div id="tab-2" class="tab-content current">
+        <!-- 2-1 : Color Div -->
+        <div id = "color_div" class ="color-div">
+          Color Div
+          <!-- 2-1-1 : Addr color -->
+          <div id = "addr_color_div" class = "addr-color-div">
+            <div id = "hot_addr_color_div" class = "color-circle-div" onclick = "colorChoose('hot_addr_color_div')">
+              Hot address color div
+              <label id = "hot_addr_color_div_value"></label>
+            </div>
+            <div id = "cold_addr_color_div" class = "color-circle-div" onclick = "colorChoose('cold_addr_color_div')">
+              Cold address color div
+              <label id = "cold_addr_color_div_value"></label>
+            </div>
+          </div>
+          <!-- 2-1-2 : Tx color -->
+          <div id = "tx_color_div" class="tx-color-div">
+            <div id = "good_tx_color_div" class = "color-circle-div" onclick = "colorChoose('good_tx_color_div')">
+              Good tx
+              <label id = "good_tx_color_div_value"></label>
+            </div>
+            <div id = "bad_tx_color_div" class = "color-circle-div" onclick = "colorChoose('bad_tx_color_div')">
+              Bad tx
+              <label id = "bad_tx_color_div_value"></label>
+            </div>
+          </div>
+        </div>
+        <!--2-2 : Condition Div-->
+        <div id = "condition_div" class ="color-div">
+          Condition for hot address
+          <!-- setting zone -->
+          <div>
+            <div>
+              Time setting
+              <input id = "time_condition_input"></input>
+            </div>
+            <div>
+              Used number setting
+              <input id = "used_number_input"></input>
+            </div>
+          </div>
+          <button id = "setting_complete_btn" onclick ='setCondition()' >setting complete</button>
+        </div>
       </div>
     </div>
   </body>
