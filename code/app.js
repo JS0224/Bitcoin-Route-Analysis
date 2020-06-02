@@ -12,7 +12,7 @@ var usersRouter = require('./routes/users');
 var app = express();
 app.io = require('socket.io')();
 //var io = socketio.listen(server);
-const mariaDB = require('./mariaDB');
+const mariaDB = require('./public/javascripts/mariaDB');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -47,20 +47,37 @@ app.use(function(err, req, res, next) {
 
 //io event receive & emit
 app.io.sockets.on('connection', function (socket){
-  socket.on('block', function(data){
-    let sql = 'SELECT * from Blocks where id =' + data;
-    let rows;
+  let sql, rows;
+  //Block
+  socket.on('block', function(height){
+    sql = mariaDB.getSql('Blocks') + height;
     rows = mariaDB.getDataFromDB(sql);
-    rows.then(function(text){
-            console.log("text:", text);
+    rows.then(function(data){
+          console.log("Block:", data[0]);
+          socket.emit('found block',data[0]);
     });
-    let sql2 = "SELECT id from Blocks where id = 12000";
-    let rows2 = mariaDB.getDataFromDB(sql2);
-    rows2.then(function(text){
-      console.log("text22:", text[0]['id']);
-      socket.emit('found wallet',text[0]);
-    });
+  });
 
+  //Transactions
+  socket.on('transaction', function(tx_hash){
+    sql = mariaDB.getSql('Transactions') + "\"" + String(tx_hash)+ "\"" ;
+    console.log("tr sql:", sql);
+    rows = mariaDB.getDataFromDB(sql);
+    rows.then(function(data){
+      console.log("trans: ",data);
+      socket.emit('found transaction',data[0]);
+    });
+  });
+
+  //Address
+  socket.on('address', function(addr){
+    sql = mariaDB.getSql('Addresses') + "\"" + String(addr) + "\"";
+    console.log("addr sql", sql);
+    rows = mariaDB.getDataFromDB(sql);
+    rows.then(function(data){
+      console.log("addr : ", data[0]);
+      socket.emit('found addr',data[0]);
+    });
   });
 });
 
