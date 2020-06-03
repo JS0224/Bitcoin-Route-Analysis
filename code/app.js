@@ -64,7 +64,7 @@ app.io.sockets.on('connection', function (socket){
     console.log("tr sql:", sql);
     rows = mariaDB.getDataFromDB(sql);
     rows.then(function(data){
-      console.log("trans: ",data);
+      console.log("trans: ",data[0]);
       socket.emit('found tx',data[0]);
     });
   });

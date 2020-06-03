@@ -38,6 +38,7 @@ async function getDataFromDB(sql){
   }
   finally{
     //console.log("rows ", rows);
+    conn.end();
     return rows
   }
 }
