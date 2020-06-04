@@ -56,12 +56,12 @@ function drawCluster(cluster){
     if ('isDrawn' in cluster[i]){ //Already drawn
       continue;
     }
-    else{
+    else{//Not drawn
       cluster[i]['isDrawn'] = true;
-      if (cluster[i]['type']=='tx'){
+      if (cluster[i]['type']=='tx'){//TX
         drawTx(i);
       }
-      else{
+      else{//Addr
         console.log("time to draw address");
         drawAddr(i);
       }
