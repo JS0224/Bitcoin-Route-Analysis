@@ -9,6 +9,7 @@
     <script src="/javascripts/btnEvent.js"></script>
     <script src="/javascripts/tab.js"></script>
     <script src="/javascripts/bitcoinElement.js"></script>
+    <script src ="/javascripts/painter.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="stylesheets/style.css" type="text/css">
     <script>
@@ -18,8 +19,8 @@
       var addr = "1JrEWRAPFcZwxY1vi4zstRUknurD4NEpn3";
     }*/
     var socket = io.connect();
+    let cluster = [];
     $(document).ready(function(){
-      let cluster=[];
       socket.on('found block', function(data){
         console.log('found block');
         addElementInCluster(cluster, new Block(data));
@@ -27,10 +28,12 @@
       socket.on('found tx', function(data){
         console.log("found tx");
         addElementInCluster(cluster, new Tx(data));
+        drawCluster(cluster);
       });
       socket.on('found addr', function(data){
         console.log("found addr");
         addElementInCluster(cluster, new Addr(data));
+        drawCluster(cluster);
 
       });
       tabToggle();
@@ -48,7 +51,7 @@
     </script>
   </head>
   <body>
-    <div class="container-image">
+    <div id = "container_image" class="container-image">
       Search Wallet
       <button type="button" name="button">HIIII</button>
       <form class= action="index.html" method="post">
@@ -68,6 +71,7 @@
         <canvas id="picker"></canvas>
         <input id="color" value="#54aedb" hidden ="true">
       </div>
+
     </div>
 
     <div class="container-tab">
