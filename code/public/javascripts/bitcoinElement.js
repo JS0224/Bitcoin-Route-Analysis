@@ -8,9 +8,8 @@ function Block(data){
 
 function Tx(data){
   if(data!=null){
-    data['show'] = true;
     data['type'] = 'tx';
-    console.log(data['show']);
+    data['good'] = true;
     return data;
   }
   console.log("Failed making tx object");
@@ -19,7 +18,7 @@ function Tx(data){
 function Addr(data){
   if(data!=null){
     data['type'] = 'addr';
-    data['show'] = true;
+    data['hot'] = false;
     return data;
   }
   console.log("Failed making addr object");

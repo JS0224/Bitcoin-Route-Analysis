@@ -1,38 +1,29 @@
 document.write("<script src ='javascripts/drag.js'></script>");
+/*
+  Basic algorithm
 
-function drawCircle(myDiv,color){ //myCanvas : canvas element
-  //Create canvas
+  drawCluster
+  0. setColor of element
+  case1. Already drawn
+        -> draw On canvas
+  case2. Not drawn
+        -> crateTx(Addr)
+          -> createDiv
+          -> createCanvas
+          -> draw On Canvas(rect or circle)
+*/
+
+
+//Create canvas
+function createCanvas(){
   var myCanvas = document.createElement('canvas');
   myCanvas.width = '100';
   myCanvas.height = '100';
   myCanvas.style.border = '1px solid black';
-  myDiv.appendChild(myCanvas);
-
-  //Draw circle in canvas
-  var ctx = myCanvas.getContext("2d");
-  var circle = new Path2D();
-  circle.arc(50, 50, 30, 0, 2 * Math.PI);
-  ctx.fillStyle = color;
-  ctx.fill(circle);
+  return myCanvas;
 }
 
-function drawRectangle(myDiv){
-  //Create canvas
-  var myCanvas = document.createElement('canvas');
-  myCanvas.width = '100';
-  myCanvas.height = '100';
-  myCanvas.style.border = '1px solid black';
-  myDiv.appendChild(myCanvas);
-
-  //Draw circle in canvas
-  var ctx = myCanvas.getContext("2d");
-  ctx.strokeRect(10, 10, 80, 80);
-}
-
-function drawLine(){
-
-}
-
+//Create Div
 function createDiv(num){
   const container = document.getElementById("container_image");
   var iDiv = document.createElement('div');
@@ -43,34 +34,103 @@ function createDiv(num){
   dragElement(iDiv);
   return iDiv;
 }
-function drawTx(num){
-  console.log("draw tx");
-  let iDiv = createDiv(num);
-  drawRectangle(iDiv);
+
+
+function drawCircleOnCanvas(myDiv,color){ //myCanvas : canvas element
+  //Draw circle in canvas
+  let myCanvas = myDiv.childNodes[0];
+  var ctx = myCanvas.getContext("2d");
+  var circle = new Path2D();
+  circle.arc(50, 50, 30, 0, 2 * Math.PI);
+  ctx.fillStyle = color;
+  ctx.fill(circle);
 }
 
-function drawAddr(num){
-  console.log("draw addr");
-  let iDiv = createDiv(num);
-  drawCircle(iDiv, 'red');
+
+function drawRectangleOnCanvas(myDiv,color){
+  let myCanvas = myDiv.childNodes[0];
+  var ctx = myCanvas.getContext("2d");
+  ctx.fillStyle = color
+  ctx.strokeRect(10, 10, 80, 80);
+}
+
+//crateTx
+function createTx(num,color){
+  //console.log("draw tx");
+  let myDiv = createDiv(num);
+  let myCanvas = createCanvas();
+  myDiv.appendChild(myCanvas);
+  drawRectangleOnCanvas(myDiv,color);
+  return myDiv;
+}
+
+//createAddress
+function createAddr(num,color){
+  //console.log("draw addr");
+  let myDiv = createDiv(num);
+  let myCanvas = createCanvas();
+  myDiv.appendChild(myCanvas);
+  drawCircleOnCanvas(myDiv,color);
+  return myDiv;
+}
+
+function setColorInCluster(cluster){
+  console.log("color setting");
+  var i = 0;
+  for (i; i<cluster.length; i++){
+    let item = cluter[i];
+    if (item['type'] == 'tx'){//TX
+      item['color'] = COLOR_BAD_TX;
+      if(item['good']){//good_TX
+        item['color'] = COLOR_GOOD_TX;
+      }
+    }else{//ADDR
+      item['color'] = COLOR_COLD_ADDR;
+      if(item['hot']){//good_TX
+        item['color'] = COLOR_HOT_ADDR;
+      }
+    }
+  }
+}
+
+function drawElementOnCanvas(item){
+    if(item['type'] == 'tx'){
+      drawRectangleOnCanvas(item['div'], item['color']);
+    }else{//Addr
+      drawCircleOnCanvas(item['div'], item['color']);
+    }
 }
 
 function drawCluster(cluster){
   console.log("draw cluster");
+  setColorInCluster(cluster);
   var i = 0;
   for(i=0; i<cluster.length; i++){
-    if ('isDrawn' in cluster[i]){ //Already drawn
+     //Already drawn
+    if ('isDrawn' in cluster[i]){
+      drawElementOnCanvas(cluster[i]);
       continue;
     }
-    else{//Not drawn
+    //Not Drawn
+    else{
       cluster[i]['isDrawn'] = true;
-      if (cluster[i]['type']=='tx'){//TX
-        drawTx(i);
+      //Tx
+      if (cluster[i]['type']=='tx'){
+        let myDiv = createTx(i,cluster[i]['color']);
+        cluster[i]['div'] = myDiv;
       }
-      else{//Addr
-        console.log("time to draw address");
-        drawAddr(i);
+      //Addr
+      else{
+        //console.log("time to draw address");
+        let myDiv = createAddr(i, cluster[i]['color']);
+        cluster[i]['div'] = myDiv;
       }
     }
   }
+}
+
+
+
+function drawLine(){
+
 }
