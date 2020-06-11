@@ -1,3 +1,5 @@
+document.write("<script src ='javascripts/drag.js'></script>");
+
 function drawCircle(myDiv,color){ //myCanvas : canvas element
   //Create canvas
   var myCanvas = document.createElement('canvas');
@@ -31,21 +33,25 @@ function drawLine(){
 
 }
 
-function drawTx(num){
-  console.log("draw tx");
+function createDiv(num){
   const container = document.getElementById("container_image");
   var iDiv = document.createElement('div');
   iDiv.id = num + 'ele';
+  iDiv.style.zIndex = num;
+  iDiv.style.position = 'absolute';
   container.appendChild(iDiv);
+  dragElement(iDiv);
+  return iDiv;
+}
+function drawTx(num){
+  console.log("draw tx");
+  let iDiv = createDiv(num);
   drawRectangle(iDiv);
 }
 
 function drawAddr(num){
   console.log("draw addr");
-  const container = document.getElementById("container_image");
-  var iDiv = document.createElement('div');
-  iDiv.id = num + 'ele';
-  container.appendChild(iDiv);
+  let iDiv = createDiv(num);
   drawCircle(iDiv, 'red');
 }
 
