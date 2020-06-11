@@ -1,15 +1,3 @@
-//document.write("<script src='/socket.io/socket.io.js'></script>");
-//get data from _input
-//clicked search btn
-/*
-function searchData(type){
-    console.log("in search data");
-    var value = document.getElementById(type+"_input").value;
-    //type : block, tx, addr
-    var socket = io.connect();
-    socket.emit(type, value);
-}*/
-
 //clicked hot_btn only
 function displayHotOnly(){
   alert("hot only");

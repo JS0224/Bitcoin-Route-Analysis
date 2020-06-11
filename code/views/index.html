@@ -34,8 +34,9 @@
         console.log("found addr");
         addElementInCluster(cluster, new Addr(data));
         drawCluster(cluster);
-
       });
+
+      
       tabToggle();
       formToggle();
     })
@@ -127,22 +128,22 @@
           Color Div
           <!-- 2-1-1 : Addr color -->
           <div id = "addr_color_div" class = "addr-color-div">
-            <div id = "hot_addr_color_div" class = "color-circle-div" onclick = "colorChoose('hot_addr_color_div')">
+            <div id = "hot_addr_color_div" class = "color-circle-div" onclick = "colorChoose(0)">
               Hot address color div
               <label id = "hot_addr_color_div_value"></label>
             </div>
-            <div id = "cold_addr_color_div" class = "color-circle-div" onclick = "colorChoose('cold_addr_color_div')">
+            <div id = "cold_addr_color_div" class = "color-circle-div" onclick = "colorChoose(1)">
               Cold address color div
               <label id = "cold_addr_color_div_value"></label>
             </div>
           </div>
           <!-- 2-1-2 : Tx color -->
           <div id = "tx_color_div" class="tx-color-div">
-            <div id = "good_tx_color_div" class = "color-circle-div" onclick = "colorChoose('good_tx_color_div')">
+            <div id = "good_tx_color_div" class = "color-circle-div" onclick = "colorChoose(2)">
               Good tx
               <label id = "good_tx_color_div_value"></label>
             </div>
-            <div id = "bad_tx_color_div" class = "color-circle-div" onclick = "colorChoose('bad_tx_color_div')">
+            <div id = "bad_tx_color_div" class = "color-circle-div" onclick = "colorChoose(3)">
               Bad tx
               <label id = "bad_tx_color_div_value"></label>
             </div>

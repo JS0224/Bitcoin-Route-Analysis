@@ -75,19 +75,19 @@ function createAddr(num,color){
 }
 
 function setColorInCluster(cluster){
-  console.log("color setting");
+  //console.log("color setting");
   var i = 0;
   for (i; i<cluster.length; i++){
-    let item = cluter[i];
+    let item = cluster[i];
     if (item['type'] == 'tx'){//TX
-      item['color'] = COLOR_BAD_TX;
+      item['color'] = colorArray[3];
       if(item['good']){//good_TX
-        item['color'] = COLOR_GOOD_TX;
+        item['color'] = colorArray[2];
       }
     }else{//ADDR
-      item['color'] = COLOR_COLD_ADDR;
+      item['color'] = colorArray[1];
       if(item['hot']){//good_TX
-        item['color'] = COLOR_HOT_ADDR;
+        item['color'] = colorArray[0];
       }
     }
   }
