@@ -10,6 +10,7 @@
     <script src="/javascripts/tab.js"></script>
     <script src="/javascripts/bitcoinElement.js"></script>
     <script src ="/javascripts/painter.js"></script>
+    <script src ="/javascripts/jquery.connection.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="stylesheets/style.css" type="text/css">
     <script>
@@ -34,13 +35,13 @@
         console.log("found addr");
         addElementInCluster(cluster, new Addr(data));
         drawCluster(cluster);
+        if (cluster.length >=2){
+        drawLine(cluster[0]['div'], cluster[1]['div']);
+        }
       });
-
-      
       tabToggle();
       formToggle();
     })
-
     //clicked search btn
     function searchData(type){
         console.log("in search data");
@@ -53,26 +54,10 @@
   </head>
   <body>
     <div id = "container_image" class="container-image">
-      Search Wallet
-      <button type="button" name="button">HIIII</button>
-      <form class= action="index.html" method="post">
-        <input type="text" name="addr">
-        <input type="submit" name="btn">
-      </form>
-      Information of Wallet<br><br>
-
-      Search block
-      <form class= action="index.html"  method="post">
-        <input type="text" name="addr">
-        <input type="submit" name="btn">
-      </form>
-      Information of Block<br><br>
-
       <div id="dialog" class="modal" display = "none">
         <canvas id="picker"></canvas>
         <input id="color" value="#54aedb" hidden ="true">
       </div>
-
     </div>
 
     <div class="container-tab">

@@ -30,6 +30,7 @@ function dragElement(element){
     // set the element's new position:
     element.style.top = (element.offsetTop - pos2) + "px";
     element.style.left = (element.offsetLeft - pos1) + "px";
+    $('.moving-part').connections('update');
   }
 
   function closeDragElement() {

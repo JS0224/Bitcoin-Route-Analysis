@@ -139,10 +139,35 @@ ul.tabs li.current{
   background : white;
 }
 
-//*Tab2 condition_div*/
+/*Tab2 condition_div*/
 .condition-div{
   height : 45%;
   background : red;
   padding : 5px;
   margin-bottom : 10px;
+}
+
+
+
+/*Line style*/
+.double-line {
+  border: 5px double;
+  z-index: 2;
+  display: table;
+  border-radius: 90px;
+  /*pointer-events:none;*/
+  color: rgb(200, 200, 200);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.double-line:hover {
+    color: #55f;
+}
+
+.single-line {
+    border: 3px solid #051;
+    opacity: 0.5;
+    z-index: 1;
+    border-radius: 100%;
+    pointer-events: none;
 }

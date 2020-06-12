@@ -1,4 +1,5 @@
 document.write("<script src ='javascripts/drag.js'></script>");
+//document.write("<script src='https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.min.js'></script>");
 /*
   Basic algorithm
 
@@ -13,13 +14,12 @@ document.write("<script src ='javascripts/drag.js'></script>");
           -> draw On Canvas(rect or circle)
 */
 
-
 //Create canvas
 function createCanvas(){
   var myCanvas = document.createElement('canvas');
-  myCanvas.width = '100';
-  myCanvas.height = '100';
-  myCanvas.style.border = '1px solid black';
+  myCanvas.width = '80';
+  myCanvas.height = '80';
+//  myCanvas.style.border = '1px solid black';
   return myCanvas;
 }
 
@@ -30,28 +30,27 @@ function createDiv(num){
   iDiv.id = num + 'ele';
   iDiv.style.zIndex = num;
   iDiv.style.position = 'absolute';
+  iDiv.classList.add('moving-part');
   container.appendChild(iDiv);
   dragElement(iDiv);
   return iDiv;
 }
-
 
 function drawCircleOnCanvas(myDiv,color){ //myCanvas : canvas element
   //Draw circle in canvas
   let myCanvas = myDiv.childNodes[0];
   var ctx = myCanvas.getContext("2d");
   var circle = new Path2D();
-  circle.arc(50, 50, 30, 0, 2 * Math.PI);
+  circle.arc(40, 40, 35, 0, 2 * Math.PI);
   ctx.fillStyle = color;
   ctx.fill(circle);
 }
-
 
 function drawRectangleOnCanvas(myDiv,color){
   let myCanvas = myDiv.childNodes[0];
   var ctx = myCanvas.getContext("2d");
   ctx.fillStyle = color
-  ctx.strokeRect(10, 10, 80, 80);
+  ctx.strokeRect(0, 0, 80, 80);
 }
 
 //crateTx
@@ -104,6 +103,7 @@ function drawElementOnCanvas(item){
 function drawCluster(cluster){
   console.log("draw cluster");
   setColorInCluster(cluster);
+  $('.moving-part').connections('update');
   var i = 0;
   for(i=0; i<cluster.length; i++){
      //Already drawn
@@ -129,8 +129,10 @@ function drawCluster(cluster){
   }
 }
 
-
-
-function drawLine(){
-
+//draw line connecting div1 and div2
+function drawLine(div1, div2){
+  $().connections({
+    from: '#' + div1.id, to: '#' + div2.id,
+    'class': 'single-line'
+  });
 }
