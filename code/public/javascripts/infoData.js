@@ -41,10 +41,10 @@ function getTxData(data){
 
 function getTime(time){
   var date = new Date(time * 1000);
-  let year = date.getYears();
+  let year = date.getFullYear();
   let hour = date.getHours();
   let min = "0" + date.getMinutes();
   let sec = "0" + date.getSeconds();
-  var format = year + 'y ' + hour + ':' + min.substr(-2) + ':' + seco.substr(-2);
-  console.log(format);
+  var format = year + 'y ' + hour + ':' + min.substr(-2) + ':' + sec.substr(-2);
+  return format;
 }
