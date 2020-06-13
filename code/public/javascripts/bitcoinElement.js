@@ -6,6 +6,7 @@ function Block(data){
   console.log("Failed making block object");
 }
 
+
 function Tx(data, center){
   if(data!=null){
     data['type'] = 'tx';
@@ -13,6 +14,9 @@ function Tx(data, center){
     data['real'] = true;
     if(!center){
       data['real'] = false;
+    }
+    else{
+      data['position'] = [1000,1000];
     }
     return data;
   }
@@ -24,7 +28,10 @@ function Addr(data,center){
     data['real'] = true;
     data['type'] = 'addr';
     data['hot'] = false;
-    if (!center){//child node
+    if (center){//child node
+      data['position'] = [500,1000];
+    }
+    else{
       data['real'] = false;
     }
     return data;
@@ -40,37 +47,38 @@ function addElementInCluster(cluster, element){
 //row : one row of tx including address info
 function addTxInCluster(cluster, rowString){
   //parent(tx)
-  addElementInCluster(cluster, new Tx(rowString), true)
+  addElementInCluster(cluster, new Tx(rowString, true));
   let othersJSON = JSON.parse(rowString['others']);
 
   //child(addr)
-  let input_addr = othersJSON['inputs'];
-  let output_addr = othersJSON['out'];
-  for(let i=0; i<input_addr.length; i++){
-    let isValid = 'addr' in input_addr[i];
+  let inputAddr = othersJSON['inputs'];
+  let outputAddr = othersJSON['out'];
+  let addrs = inputAddr.concat(outputAddr);
+
+  for(let i=0; i<addrs.length; i++){
+    let isValid = 'addr' in addrs[i];
     if (isValid){
-      let data = {'addr' : input_addr[i]['addr']};
+      let data = {
+        'addr' : addrs[i]['addr'],
+        'position' : [getPositionX(addrs.length, i),getPositionY(addrs.length, i)]
+      };
       addElementInCluster(cluster, new Addr(data, false));
     }
     else;
-  }
-  for(let i=0; i<output_addr.length; i++){
-    let isValid = 'addr' in output_addr[i];
-    if (isValid){
-      let data = {'addr' : output_addr[i]['addr']};
-      addElementInCluster(cluster, new Addr(data, false));
-    }
   }
 }
 
 //rows : many rows with same addr, diff tx
 function addAddrInCluster(cluster, rows){
   //parent(addr)
-  addElementInCluster(cluster, new Addr(rows[0]), true);
+  addElementInCluster(cluster, new Addr(rows[0], true));
 
   //child(tx)
   for(let i=0; i<rows.length; i++){
-    let data = {'transaction_hash' : rows[i]['transaction_hash']};
+    let data = {
+      'transaction_hash' : rows[i]['transaction_hash'],
+      'position' : [getPositionX(rows.length, i),getPositionY(rows.length, i)]
+    };
     addElementInCluster(cluster, new Tx(data, false));
   }
 }
@@ -86,4 +94,24 @@ function addLine(lines, parentIdNum, childNum){
   lines.push(arr);
   drawLine(arr);
   //console.log("lines", lines);
+}
+
+//=============== position realted function ================
+function getTheta(length, i){
+  let dividend = 360 / length; //ex - 51
+  let degree = dividend * i; //ex - 306
+  return Math.PI * (degree / 180);
+}
+
+function getPositionX (length, i){
+  let theta = getTheta(length, i);
+  let radius = 200;
+  return  Math.round(radius * Math.cos(theta));
+}
+
+function getPositionY (length, i){
+  let theta = getTheta(length, i);
+  let radius = 200;
+  console.log("theta" , theta);
+  return Math.round(radius * Math.sin(theta));
 }
