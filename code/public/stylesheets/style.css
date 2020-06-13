@@ -171,3 +171,18 @@ ul.tabs li.current{
     border-radius: 100%;
     pointer-events: none;
 }
+
+
+.moving-part-info{
+  width: 300px;
+  background-color: black;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  top: 30px;
+  right: 115%;
+}

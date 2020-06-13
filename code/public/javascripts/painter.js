@@ -19,21 +19,41 @@ function createCanvas(){
   var myCanvas = document.createElement('canvas');
   myCanvas.width = '80';
   myCanvas.height = '80';
-//  myCanvas.style.border = '1px solid black';
+  myCanvas.classList.add('moving-part');
   return myCanvas;
 }
 
 //Create Div
-function createDiv(num){
+function createDiv(num, positions){
   const container = document.getElementById("container_image");
   var iDiv = document.createElement('div');
   iDiv.id = num + 'ele';
   iDiv.style.zIndex = num;
   iDiv.style.position = 'absolute';
   iDiv.classList.add('moving-part');
-  container.appendChild(iDiv);
+  iDiv.style.top = positions[1];
+  iDiv.style.left = positions[0];
   dragElement(iDiv);
+
+  let infoDiv = document.getElementById(num +'info');
+  iDiv.addEventListener('mouseenter', function(){  infoDiv.style.visibility = 'visible'; });
+  iDiv.addEventListener('mouseleave', function(){  infoDiv.style.visibility = 'hidden';  });
+
+  container.appendChild(iDiv);
   return iDiv;
+}
+
+function createInfoDiv(num, data){
+  const container = document.getElementById("container_image");
+  let infoDiv = document.createElement('div');
+  infoDiv.id = num + 'info';
+  infoDiv.style.zIndex = num;
+  infoDiv.style.visibility = 'hidden';
+  infoDiv.innerHTML = getInfoData(data);
+  infoDiv.classList.add('moving-part-info');
+
+  container.appendChild(infoDiv);
+  return infoDiv;
 }
 
 function drawCircleOnCanvas(myDiv,color){ //myCanvas : canvas element
@@ -54,22 +74,26 @@ function drawRectangleOnCanvas(myDiv,color){
 }
 
 //crateTx
-function createTx(num,color){
+function createTx(num,data){
   //console.log("draw tx");
-  let myDiv = createDiv(num);
+  let infoDiv = createInfoDiv(num,data);
+  let myDiv = createDiv(num, data['position']);
   let myCanvas = createCanvas();
   myDiv.appendChild(myCanvas);
-  drawRectangleOnCanvas(myDiv,color);
+  drawRectangleOnCanvas(myDiv,data['color']);
+  myDiv.appendChild(infoDiv);
   return myDiv;
 }
 
 //createAddress
-function createAddr(num,color){
+function createAddr(num,data){
   //console.log("draw addr");
-  let myDiv = createDiv(num);
+  let infoDiv = createInfoDiv(num,data);
+  let myDiv = createDiv(num, data['position']);
   let myCanvas = createCanvas();
   myDiv.appendChild(myCanvas);
-  drawCircleOnCanvas(myDiv,color);
+  drawCircleOnCanvas(myDiv,data['color']);
+  myDiv.appendChild(infoDiv);
   return myDiv;
 }
 
@@ -115,13 +139,13 @@ function drawCluster(cluster){
       cluster[i]['isDrawn'] = true;
       //Tx
       if (cluster[i]['type']=='tx'){
-        let myDiv = createTx(i,cluster[i]['color']);
+        let myDiv = createTx(i,cluster[i]);
         cluster[i]['div'] = myDiv;
       }
       //Addr
       else{
         //console.log("time to draw address");
-        let myDiv = createAddr(i, cluster[i]['color']);
+        let myDiv = createAddr(i, cluster[i]);
         cluster[i]['div'] = myDiv;
       }
     }
