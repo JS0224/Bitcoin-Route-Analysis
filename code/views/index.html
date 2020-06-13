@@ -21,6 +21,7 @@
     }*/
     var socket = io.connect();
     let cluster = [];
+    let lines  = [];
     $(document).ready(function(){
       socket.on('found block', function(data){
         console.log('found block');
@@ -28,27 +29,21 @@
       });
       socket.on('found tx', function(data){
         console.log("found tx");
-        addElementInCluster(cluster, new Tx(data));
+        let parentIdNum = cluster.length;
+        addTxInCluster(cluster, data);
         drawCluster(cluster);
+        addLine(lines, parentIdNum, cluster.length - parentIdNum -1);
       });
       socket.on('found addr', function(data){
         console.log("found addr");
-        addElementInCluster(cluster, new Addr(data));
+        let parentIdNum = cluster.length;
+        addAddrInCluster(cluster, data);
         drawCluster(cluster);
-        if (cluster.length >=2){
-        drawLine(cluster[0]['div'], cluster[1]['div']);
-        }
+        addLine(lines, parentIdNum, data.length);
       });
       tabToggle();
       formToggle();
     })
-    //clicked search btn
-    function searchData(type){
-        console.log("in search data");
-        var value = document.getElementById(type+"_input").value;
-        //type : block, tx, addr
-        socket.emit(type, value);
-    }
 
     </script>
   </head>

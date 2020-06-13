@@ -1,3 +1,11 @@
+//clicked search btn
+function searchData(type){
+    console.log("in search data");
+    var value = document.getElementById(type+"_input").value;
+    //type : block, tx, addr
+    socket.emit(type, value);
+}
+
 //clicked hot_btn only
 function displayHotOnly(){
   alert("hot only");
