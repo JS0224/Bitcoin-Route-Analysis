@@ -35,9 +35,9 @@ function createDiv(num, positions){
   iDiv.style.left = positions[0];
   dragElement(iDiv);
 
-  let infoDiv = document.getElementById(num +'info');
-  iDiv.addEventListener('mouseenter', function(){  infoDiv.style.visibility = 'visible'; });
-  iDiv.addEventListener('mouseleave', function(){  infoDiv.style.visibility = 'hidden';  });
+  iDiv.addEventListener('mouseenter', showInfoDiv(num));
+  iDiv.addEventListener('mouseleave', hideInfoDiv(num));
+  iDiv.addEventListener('dblclick', getMoreData(num));
 
   container.appendChild(iDiv);
   return iDiv;

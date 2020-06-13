@@ -6,7 +6,6 @@ function Block(data){
   console.log("Failed making block object");
 }
 
-
 function Tx(data, center){
   if(data!=null){
     data['type'] = 'tx';
@@ -44,12 +43,42 @@ function addElementInCluster(cluster, element){
   console.log("cluster", cluster);
 }
 
+
+function checkAddrInCluster(cluster,addr){
+  for(let i=0; i< cluster.length; i++){
+    if (cluster[i]['type'] =='addr' &&
+        cluster[i]['addr'] == addr){
+      return i;
+    }
+  }
+  return null;
+}
+
+function checkTxInCluster(cluster,hash){
+  for(let i=0; i< cluster.length; i++){
+    //console.log("all cluster : ", cluster[i]);
+    if (cluster[i]['type'] == 'tx' &&
+        cluster[i]['transaction_hash'] == hash){
+      return i;
+    }
+  }
+  return null;
+}
+
 //row : one row of tx including address info
 function addTxInCluster(cluster, rowString){
   //parent(tx)
-  addElementInCluster(cluster, new Tx(rowString, true));
-  let othersJSON = JSON.parse(rowString['others']);
+  let existId = checkTxInCluster(cluster, rowString['transaction_hash']);
+  if (existId == null){
+    addElementInCluster(cluster, new Tx(rowString, true));
+  }else{//데이터가 이미 있음
+    console.log("exsiting already" ,existId);
+    cluster[existId] = new Tx(rowString, true);
+    cluster[existId]['isDrawn'] = true;
+  }
 
+
+  let othersJSON = JSON.parse(rowString['others']);
   //child(addr)
   let inputAddr = othersJSON['inputs'];
   let outputAddr = othersJSON['out'];
@@ -71,7 +100,13 @@ function addTxInCluster(cluster, rowString){
 //rows : many rows with same addr, diff tx
 function addAddrInCluster(cluster, rows){
   //parent(addr)
-  addElementInCluster(cluster, new Addr(rows[0], true));
+  let existId = checkAddrInCluster(cluster, rows[0]['addr']);
+  if (existId == null){
+      addElementInCluster(cluster, new Addr(rows[0], true));
+  }else{//데이터가 이미 있음
+    cluster[existId] = new Addr(rows[0], true);
+    cluster[existId]['isDrawn'] = true;
+  }
 
   //child(tx)
   for(let i=0; i<rows.length; i++){
