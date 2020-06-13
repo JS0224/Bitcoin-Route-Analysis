@@ -75,8 +75,8 @@ app.io.sockets.on('connection', function (socket){
     console.log("addr sql", sql);
     rows = mariaDB.getDataFromDB(sql);
     rows.then(function(data){
-      console.log("addr : ", data[0]);
-      socket.emit('found addr',data[0]);
+      console.log("addr : ", data);
+      socket.emit('found addr',data);
     });
   });
 });

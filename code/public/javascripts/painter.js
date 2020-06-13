@@ -101,9 +101,8 @@ function drawElementOnCanvas(item){
 }
 
 function drawCluster(cluster){
-  console.log("draw cluster");
+  //console.log("draw cluster");
   setColorInCluster(cluster);
-  $('.moving-part').connections('update');
   var i = 0;
   for(i=0; i<cluster.length; i++){
      //Already drawn
@@ -129,10 +128,20 @@ function drawCluster(cluster){
   }
 }
 
+//lines : one array
+//The first element of each array is parent
+function drawLine(lines){
+  let i;
+  for(i=1; i<lines.length; i++){
+      connectDiv(lines[0], lines[i]);
+  }
+}
+
 //draw line connecting div1 and div2
-function drawLine(div1, div2){
+//ref : https://github.com/musclesoft/jquery-connections/wiki/API
+function connectDiv(div1, div2){
   $().connections({
-    from: '#' + div1.id, to: '#' + div2.id,
+    from: '#' + div1, to: '#' + div2,
     'class': 'single-line'
   });
 }
