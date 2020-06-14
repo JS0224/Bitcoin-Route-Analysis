@@ -56,6 +56,11 @@ function createInfoDiv(num, data){
   return infoDiv;
 }
 
+function updateInfoBox(num, data){
+  const infoBox = document.getElementById(num + "info");
+  infoBox.innerHTML = getInfoData(data);
+}
+
 function drawCircleOnCanvas(myDiv,color){ //myCanvas : canvas element
   //Draw circle in canvas
   let myCanvas = myDiv.childNodes[0];
@@ -132,6 +137,7 @@ function drawCluster(cluster){
      //Already drawn
     if ('isDrawn' in cluster[i]){
       drawElementOnCanvas(cluster[i]);
+      updateInfoBox(i, cluster[i]);
       continue;
     }
     //Not Drawn
