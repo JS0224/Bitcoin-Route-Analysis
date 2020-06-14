@@ -1,3 +1,4 @@
+//=================== bitcoin element object ================
 function Block(data){
   if(data!=null){
     data['show'] = true;
@@ -38,20 +39,43 @@ function Addr(data,center){
   console.log("Failed making addr object");
 }
 
+//=================== cluster realted function ================
 function addElementInCluster(cluster, element){
   cluster.push(element);
   console.log("cluster", cluster);
+  return (cluster.length - 1);
 }
 
+function updateDataInCluster(cluster,existId,type, newData){
+  let obj, oldObj;
+  oldObj = cluster[existId];
+  if (type == 'addr'){
+    obj = new Addr(newData, true);
+    obj['hot'] = oldObj['hot'];
+  }else{
+    obj = new Tx(newData, true);
+    obj['good'] = oldObj['good'];
+  }
+  obj['color'] = oldObj['color'];
+  obj['div'] = oldObj['div'];
+  obj['position'] = oldObj['position'];
+  obj['isDrawn'] = true;
+  cluster[existId] = obj;
+}
 
 function checkAddrInCluster(cluster,addr){
   for(let i=0; i< cluster.length; i++){
     if (cluster[i]['type'] =='addr' &&
         cluster[i]['addr'] == addr){
-      return i;
+      if(cluster[i]['real']){//real address exist
+        return [true, i];
+      }
+      else{//tmp address exist
+        return [false, i];
+      }
     }
-  }
-  return null;
+  }//no data
+  return [false, null];
 }
 
 function checkTxInCluster(cluster,hash){
@@ -59,24 +83,33 @@ function checkTxInCluster(cluster,hash){
     //console.log("all cluster : ", cluster[i]);
     if (cluster[i]['type'] == 'tx' &&
         cluster[i]['transaction_hash'] == hash){
-      return i;
+        if(cluster[i]['real']){//real address exist
+          return [true, i];
+        }
+        else{//tmp address exist
+          return [false, i];
+        }
     }
   }
-  return null;
+  return [false, null];
 }
 
 //row : one row of tx including address info
+//return list of [parent, childnodes]
 function addTxInCluster(cluster, rowString){
-  //parent(tx)
+  let newIdList =[];
+  //parent(addr)
   let existId = checkTxInCluster(cluster, rowString['transaction_hash']);
-  if (existId == null){
-    addElementInCluster(cluster, new Tx(rowString, true));
-  }else{//데이터가 이미 있음
-    console.log("exsiting already" ,existId);
-    cluster[existId] = new Tx(rowString, true);
-    cluster[existId]['isDrawn'] = true;
+  if (existId[1] == null){//brand new data
+      let newPId = addElementInCluster(cluster, new Tx(rowString, true));
+      newIdList.push(newPId);
+  }else{//data exist
+      newIdList.push(existId[1]);
+      if(!existId[0]){//tmp data
+        updateDataInCluster(cluster,existId[1], 'tx',rowString);
+      }
+      //do nothing for exsting real data
   }
-
 
   let othersJSON = JSON.parse(rowString['others']);
   //child(addr)
@@ -86,48 +119,78 @@ function addTxInCluster(cluster, rowString){
 
   for(let i=0; i<addrs.length; i++){
     let isValid = 'addr' in addrs[i];
-    if (isValid){
-      let data = {
-        'addr' : addrs[i]['addr'],
-        'position' : [getPositionX(addrs.length, i),getPositionY(addrs.length, i)]
-      };
-      addElementInCluster(cluster, new Addr(data, false));
+    if(!isValid) {continue;}
+
+    let addr = addrs[i]['addr'];
+    existId = checkAddrInCluster(cluster, addr);
+    if (existId[1] == null){//brand new data
+        let data = {
+          'addr' : addrs[i]['addr'],
+          'position' : [getPositionX(addrs.length, i),getPositionY(addrs.length, i)]
+        };
+        let newCId = addElementInCluster(cluster, new Addr(data, false));
+        newIdList.push(newCId);
+    }else{//data exist
+        newIdList.push(existId[1]);
+        //do nothing for exsting real, tmp data
     }
-    else;
   }
+  console.log("new id lis: ", newIdList);
+  return newIdList;
 }
 
+
 //rows : many rows with same addr, diff tx
+//return list of [parent, childnodes]
 function addAddrInCluster(cluster, rows){
+  let newIdList =[];
   //parent(addr)
   let existId = checkAddrInCluster(cluster, rows[0]['addr']);
-  if (existId == null){
-      addElementInCluster(cluster, new Addr(rows[0], true));
-  }else{//데이터가 이미 있음
-    cluster[existId] = new Addr(rows[0], true);
-    cluster[existId]['isDrawn'] = true;
+  if (existId[1] == null){//brand new data
+      let newPId = addElementInCluster(cluster, new Addr(rows[0], true));
+      newIdList.push(newPId);
+  }else{//data exist
+      newIdList.push(existId[1]);
+      if(!existId[0]){//tmp data
+        updateDataInCluster(cluster,existId[1], 'addr', rows[0]);
+      }
+      //do nothing for exsting real data
   }
 
   //child(tx)
   for(let i=0; i<rows.length; i++){
-    let data = {
-      'transaction_hash' : rows[i]['transaction_hash'],
-      'position' : [getPositionX(rows.length, i),getPositionY(rows.length, i)]
-    };
-    addElementInCluster(cluster, new Tx(data, false));
+    let hash = rows[i]['transaction_hash'];
+    existId = checkTxInCluster(cluster, hash);
+    if (existId[1] == null){//brand new data
+        let data = {
+          'transaction_hash' : rows[i]['transaction_hash'],
+          'position' : [getPositionX(rows.length, i),getPositionY(rows.length, i)]
+        };
+        let newCId = addElementInCluster(cluster, new Tx(data, false));
+        newIdList.push(newCId);
+    }else{//data exist
+        newIdList.push(existId[1]);
+        //do nothing for exsting real, tmp data
+    }
   }
+  //console.log("new id lis: ", newIdList);
+  return newIdList;
 }
 
 //add lines connecting parent and children (parent : addr/tx, child : tx/addr)
-function addLine(lines, parentIdNum, childNum){
-  //console.log("parentID:, child num", parentIdNum, childNum);
-  let arr = [];
-  let i=0;
-  for(; i<=childNum; i++){
-    arr.push((parentIdNum + i) + 'ele');
+function addLine(lines, addedId){
+  //console.log("lines: ", lines, "adddedId : ",addedId);
+  let parentId  = addedId[0];
+  let arr = [parentId + 'ele'];
+  for(let i=1; i<addedId.length; i++){
+    if (addedId[i] > parentId){
+      arr.push(addedId[i] + 'ele');
+    }
   }
-  lines.push(arr);
-  drawLine(arr);
+  if (arr.length > 1){
+    lines.push(arr);
+    drawLine(arr);
+  }
   //console.log("lines", lines);
 }
 

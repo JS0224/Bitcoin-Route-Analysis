@@ -30,17 +30,16 @@
       });
       socket.on('found tx', function(data){
         console.log("found tx");
-        let parentIdNum = cluster.length;
-        addTxInCluster(cluster, data);
+        let addedId = addTxInCluster(cluster, data);
+        //console.log("added id in found tx:", addedId);
         drawCluster(cluster);
-        addLine(lines, parentIdNum, cluster.length - parentIdNum -1);
+        addLine(lines, addedId);
       });
       socket.on('found addr', function(data){
         console.log("found addr");
-        let parentIdNum = cluster.length;
-        addAddrInCluster(cluster, data);
+        let addedId = addAddrInCluster(cluster, data);
         drawCluster(cluster);
-        addLine(lines, parentIdNum, data.length);
+        addLine(lines, addedId);
       });
       tabToggle();
       formToggle();
