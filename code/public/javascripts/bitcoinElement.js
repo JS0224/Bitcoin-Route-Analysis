@@ -135,7 +135,6 @@ function addTxInCluster(cluster, rowString){
         //do nothing for exsting real, tmp data
     }
   }
-  console.log("new id lis: ", newIdList);
   return newIdList;
 }
 
@@ -173,7 +172,6 @@ function addAddrInCluster(cluster, rows){
         //do nothing for exsting real, tmp data
     }
   }
-  //console.log("new id lis: ", newIdList);
   return newIdList;
 }
 
@@ -191,7 +189,6 @@ function addLine(lines, addedId){
     lines.push(arr);
     drawLine(arr);
   }
-  //console.log("lines", lines);
 }
 
 //=============== position realted function ================
@@ -210,6 +207,5 @@ function getPositionX (length, i){
 function getPositionY (length, i){
   let theta = getTheta(length, i);
   let radius = 200;
-  console.log("theta" , theta);
   return Math.round(radius * Math.sin(theta));
 }

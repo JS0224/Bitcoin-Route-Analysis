@@ -31,7 +31,6 @@
       socket.on('found tx', function(data){
         console.log("found tx");
         let addedId = addTxInCluster(cluster, data);
-        //console.log("added id in found tx:", addedId);
         drawCluster(cluster);
         addLine(lines, addedId);
       });

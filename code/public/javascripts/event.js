@@ -1,6 +1,5 @@
 //clicked search btn
 function searchData(type){
-    console.log("in search data");
     var value = document.getElementById(type+"_input").value;
     //type : block, tx, addr
     socket.emit(type, value);
@@ -53,10 +52,8 @@ let getMoreData = function(num) {
        }
        else{
           if (chosenEle['type'] == 'tx'){
-            console.log("txhere", chosenEle['transaction_hash']);
             socket.emit('tx', chosenEle['transaction_hash']);
           }else{
-            console.log("addrhere", chosenEle['addr']);
             socket.emit('addr', chosenEle['addr']);
           }
        }
