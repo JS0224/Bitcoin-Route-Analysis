@@ -111,9 +111,9 @@ function addTxInCluster(cluster, rowString){
       //do nothing for exsting real data
   }
 
+  //child(tx)
   let othersJSON = JSON.parse(rowString['others']);
-  //child(addr)
-  let inputAddr = othersJSON['inputs'];
+  let inputAddr = othersJSON['inputs'].map((e) => { return 'prev_out' in e? e['prev_out'] : {}; });
   let outputAddr = othersJSON['out'];
   let addrs = inputAddr.concat(outputAddr);
 
