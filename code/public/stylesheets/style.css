@@ -60,40 +60,54 @@ ul.tabs li.current{
 /*Tab1 data_div*/
 .data-div{
   height : 60%;
-  background : red;
+  background : #596368;
   padding : 5px;
   margin-bottom : 10px;
+  border-radius : 10%;
 }
 
 
 .selection-div{
-  height : 30%;
+  height : 20%;
   margin : 5px;
-  background : #01DFD7;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  background : #596368;
 }
 
 .selection-content{
   float : left;
-  width : 33.33%;
-  height : 100%;
-  border: = solid 1px black;
-  background : #01DFD7;
+  width : 31%;
+  height : 70%;
+  border: solid 1px black;
+  border-radius : 10%;
+  background : #b0c8d4;
+  margin-right: 5px;
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 10%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size : 20px;
 }
 
 .selection-current{
-  background : #08088A;
+  background : black;
+  color : white;
 }
 
 /*Tab1 button_div*/
 .button-div{
   height : 35%;
-  background : yellow;
+  background : #596368;
+  border-radius : 10%;
 }
 
+/*Tab1 form div*/
 .form-div{
   height : 60%;
   margin : 5px;
   background : white;
+  border-radius: 10%;
 }
 
 .form-content{
@@ -115,28 +129,40 @@ ul.tabs li.current{
   background : red;
   padding : 5px;
   margin-bottom : 10px;
+  background : #596368;
+  border-radius : 10%;
 }
 
 .addr-color-div{
   height : 35%;
   margin : 5px;
   margin-top : 20px;
-  background : #01DFD7;
+  background : #aabaca;
 }
 
 .tx-color-div{
   height : 35%;
   margin : 5px;
   margin-top : 20px;
-  background : #0101D7;
+  background : #aabaca;
 }
 
 .color-circle-div{
   float : left;
-  height : 60%;
+  height : 40%;
   width : 40%;
-  margin: 10px;
+  margin: 15px;
+  padding-top: 7%;
   background : white;
+  border-radius : 10px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 20px;
+}
+
+.color-circle-div:hover {
+  background : black;
+  color : white;
 }
 
 /*Tab2 condition_div*/
@@ -145,10 +171,20 @@ ul.tabs li.current{
   background : red;
   padding : 5px;
   margin-bottom : 10px;
+  background : #596368;
+  border-radius : 10%;
 }
 
+button {
+  padding : 10px 15px;
+  background-color:  #5484db;
+  margin: 10px;
+}
 
-
+button:hover {
+  background-color: black;
+  color : white;
+}
 /*Line style*/
 .double-line {
   border: 5px double;
@@ -173,13 +209,14 @@ ul.tabs li.current{
 }
 
 
+/*info box- div*/
 .moving-part-info{
-  width: 300px;
+  width: 500px;
   background-color: black;
   color: #fff;
   text-align: left;
   border-radius: 6px;
-  padding: 5px 0;
+  padding: 5px 5px;
 
   /* Position the tooltip */
   position: absolute;
